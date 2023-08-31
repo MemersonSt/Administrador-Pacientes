@@ -7,7 +7,7 @@ function Formulario (){
     const [propietario, setPropietario] = useState('')
     const [fecha, setFecha] = useState('')
     const [email, setEmail] = useState('')
-    const [sintomas, setSintomas] = useState('')    
+    const [sintomas, setSintomas] = useState('')
 
     const handleSubmit = e => { //Esta funcion se ejecuta cuando se envia el formulario
         e.preventDefault()//Evita que se recargue la pagina
