@@ -1,7 +1,7 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 
 // eslint-disable-next-line react/prop-types
-function Formulario ({pacientes, setPacientes}){
+function Formulario ({pacientes, setPacientes, paciente, setPaciente}){
     const [error, setError] = useState(false)// El primer valor es el estado y el segundo es la funcion que lo modifica y sirve para cambiar el valor del estado
     const [nombre, setNombre] = useState('')//El primer valor es el estado y el segundo es la funcion que lo modifica y sirve para cambiar el valor del estado
     const [propietario, setPropietario] = useState('')
@@ -9,6 +9,18 @@ function Formulario ({pacientes, setPacientes}){
     const [email, setEmail] = useState('')
     const [sintomas, setSintomas] = useState('')
 
+
+
+    useEffect(() => {
+        if (Object.keys(paciente).length > 0){
+            setNombre(paciente.nombre)
+            setPropietario(paciente.propietario)
+            setFecha(paciente.fecha)
+            setEmail(paciente.email)
+            setSintomas(paciente.sintomas)
+        }
+      }, [paciente])
+    
     const generarId = () =>{
         const random = Math.random().toString(36).substr(2);
         const feacha = Date.now().toString(36);
@@ -33,11 +45,25 @@ function Formulario ({pacientes, setPacientes}){
             propietario,
             fecha,
             email,
-            sintomas,
-            id: generarId()
+            sintomas
         }
 
-        setPacientes([...pacientes, objetoPacientes])
+        if(paciente.id){
+            //editando el registro
+            objetoPacientes.id = paciente.id
+
+            const pacienteActualizado = pacientes.map(pacienteState => pacienteState.id === paciente.id? objetoPacientes : pacienteState)
+
+            setPacientes(pacienteActualizado)
+
+            setPaciente({})
+        } else{
+            //Nuevo registro
+            objetoPacientes.id = generarId();
+            setPacientes([...pacientes, objetoPacientes])
+        }
+
+        
         /**
          * Aqui se esta agregando un nuevo objeto al arreglo de pacientes con el spread operator y el objetoPacientes
          * El spread operator sirve para copiar el arreglo y agregarle un nuevo elemento al final del arreglo
@@ -120,7 +146,7 @@ function Formulario ({pacientes, setPacientes}){
                     <input 
                         type="submit"
                         className="bg-indigo-500 w-3/4 mt-5 p-2 rounded-xl text-white uppercase font-bold hover:bg-indigo-600"
-                        value="Agregar Cita"
+                        value={ paciente.id ? 'editar paciente':'agregar paciente'}
                     />
                 </div>
             </form>

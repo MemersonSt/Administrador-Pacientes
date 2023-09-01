@@ -1,5 +1,13 @@
-const Pacientes = ({paciente, setPaciente}) => {
-    const {nombre, propietario, fecha, sintomas} = paciente
+const Pacientes = ({paciente, setPaciente, eliminarPaciente}) => {
+    const {nombre, propietario, fecha, sintomas, id} = paciente
+
+    const handleEliminar = () => {
+        const respuesta = confirm('Deseas eliminar este paciente');
+
+        if(respuesta){
+            eliminarPaciente(id)
+        }
+    }
 
     return (
         <div className="m-3 bg-white shadow-md rounded-xl px-5 py-10 flex">
@@ -33,6 +41,7 @@ const Pacientes = ({paciente, setPaciente}) => {
                     <button
                         type="button"
                         className="py-2 px-10 mt-5 bg-red-600 hover:bg-red-800 text-white font-bold uppercase rounded-3xl"
+                        onClick={handleEliminar}
                     > Eliminar
                     </button>
                 </div>
